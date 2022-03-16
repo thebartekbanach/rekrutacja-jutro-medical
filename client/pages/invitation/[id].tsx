@@ -149,6 +149,7 @@ const InvitationPage = () => {
 	);
 
 	const firstName = data?.invitation.firstName ?? "";
+	const invitationAccepted = data?.invitation.status === "ACCEPTED";
 
 	return (
 		<main className={common["page-content"]}>
@@ -160,6 +161,17 @@ const InvitationPage = () => {
 					data?.isInvitationModificationLocked ?? true
 				}
 			/>
+			<a
+				href={`/api/invitation/${id}/ticket`}
+				target="_blank"
+				rel="noreferrer"
+				style={{
+					pointerEvents: invitationAccepted ? "all" : "none",
+					opacity: invitationAccepted ? 1 : 0.2,
+				}}
+			>
+				Download ticket
+			</a>
 		</main>
 	);
 };
