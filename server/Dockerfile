@@ -9,3 +9,21 @@ RUN npm install
 COPY . .
 
 RUN npm run build
+
+
+FROM node:16-alpine AS production
+
+WORKDIR /usr/src/app
+
+COPY --chown=node:node package*.json ./
+RUN npm ci
+
+COPY --chown=node:node . .
+
+ENV NODE_ENV production
+
+RUN npm run build
+
+USER node
+
+CMD ["npm", "start"]

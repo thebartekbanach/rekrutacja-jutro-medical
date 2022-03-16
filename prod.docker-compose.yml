@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  proxy:
+    container_name: invitation-list-proxy
+    build:
+      context: ./proxy
+      dockerfile: ./Dockerfile
+    networks:
+      - public
+    depends_on:
+      - client
+      - server
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.invitation-list.rule=Host(`bday.bartekbanach.dev`)
+      - traefik.http.routers.invitation-list.entrypoints=websecure
+      - traefik.http.routers.invitation-list.tls=true
+      - traefik.http.routers.invitation-list.tls.certresolver=leresolver
+      - traefik.http.services.invitation-list.loadbalancer.server.port=80
+
+  client:
+    container_name: invitation-list-client
+    build:
+      context: ./client
+      dockerfile: ./Dockerfile
+      target: prod
+    networks:
+      - public
+    depends_on:
+     - server
+
+  server:
+    container_name: invitation-list-server
+    build:
+      context: ./server
+      target: production
+      dockerfile: ./Dockerfile
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DATABASE: ${DB_DATABASE}
+    networks:
+      - public
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  db:
+    container_name: invitation-list-db
+    image: postgres:14.2-alpine
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    networks:
+      - public
+    restart: unless-stopped
+
+networks:
+  public:
+    external: true
