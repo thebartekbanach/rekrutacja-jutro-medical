@@ -25,6 +25,16 @@ export class InvitationsResolver {
 	}
 
 	@Mutation(() => Invitation)
+	async acceptInvitation(@Args("id") id: string): Promise<Invitation> {
+		return await this.invitationService.acceptInvitation(id);
+	}
+
+	@Mutation(() => Invitation)
+	async rejectInvitation(@Args("id") id: string): Promise<Invitation> {
+		return await this.invitationService.rejectInvitation(id);
+	}
+
+	@Mutation(() => Invitation)
 	async deleteInvitation(@Args("id") id: string): Promise<Invitation> {
 		return await this.invitationService.delete(id);
 	}

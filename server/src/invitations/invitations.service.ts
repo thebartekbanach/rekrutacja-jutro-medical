@@ -27,6 +27,24 @@ export class InvitationsService {
 		return await this.invitationRepository.save(invitation);
 	}
 
+	async acceptInvitation(id: string): Promise<Invitation> {
+		const invitation = await this.invitationRepository.findOne(id);
+
+		invitation.status = InvitationStatus.ACCEPTED;
+		invitation.statusUpdateDate = new Date();
+
+		return await this.invitationRepository.save(invitation);
+	}
+
+	async rejectInvitation(id: string): Promise<Invitation> {
+		const invitation = await this.invitationRepository.findOne(id);
+
+		invitation.status = InvitationStatus.REJECTED;
+		invitation.statusUpdateDate = new Date();
+
+		return await this.invitationRepository.save(invitation);
+	}
+
 	async delete(id: string): Promise<Invitation> {
 		const invitation = await this.invitationRepository.findOne(id);
 		await this.invitationRepository.delete(id);
