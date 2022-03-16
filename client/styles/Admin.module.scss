@@ -1,0 +1,88 @@
+.invitations-table {
+	border-collapse: collapse;
+	min-width: 400px;
+
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	overflow: hidden;
+
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+
+	margin-bottom: 15px;
+
+	thead tr {
+		background-color: #009879;
+		text-align: left;
+	}
+
+	th,
+	td {
+		padding: 15px 25px;
+		color: #333;
+	}
+
+	th {
+		color: white;
+		font-weight: 900;
+	}
+
+	tbody tr {
+		text-align: left;
+		background: white;
+		border-bottom: 1px solid #ddd;
+
+		&:nth-of-type(even) {
+			background-color: #f3f3f3;
+		}
+
+		&:last-of-type {
+			border-bottom: 2px solid #009879;
+		}
+	}
+}
+
+.invitation-add-form {
+	display: block;
+	text-align: center;
+	margin-top: 50px;
+
+	form {
+		display: inline-block;
+
+		overflow: hidden;
+		border-top-left-radius: 10px;
+		border-top-right-radius: 10px;
+		border-bottom: 2px solid #009879;
+		box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+
+		header {
+			display: block;
+
+			line-height: 49px;
+			text-align: center;
+
+			background: #009879;
+			color: white;
+			font-weight: 900;
+			letter-spacing: 1px;
+		}
+
+		.invitation-add-form-inputs {
+			padding: 20px;
+
+			label {
+				display: block;
+				text-align: left;
+				margin-bottom: 5px;
+			}
+
+			input,
+			select {
+				margin-bottom: 20px;
+				width: 100%;
+				box-sizing: border-box;
+				padding: 5px 10px;
+			}
+		}
+	}
+}
