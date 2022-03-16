@@ -9,7 +9,7 @@ interface InvitationInfo {
 	firstName: string;
 	lastName: string;
 	status: string;
-	lastUpdate?: Date;
+	statusUpdateDate?: string;
 }
 
 interface InvitationTableRowProps {
@@ -18,11 +18,11 @@ interface InvitationTableRowProps {
 }
 
 const InvitationTableRow: FC<InvitationTableRowProps> = ({
-	invitation: { id, firstName, lastName, status, lastUpdate },
+	invitation: { id, firstName, lastName, status, statusUpdateDate },
 	onDelete,
 }) => {
-	const lastUpdateOrEmpty = lastUpdate
-		? lastUpdate.toLocaleString()
+	const lastUpdateOrEmpty = statusUpdateDate
+		? new Date(statusUpdateDate).toLocaleString()
 		: "Not answered yet";
 
 	const handleDelete = () => {
