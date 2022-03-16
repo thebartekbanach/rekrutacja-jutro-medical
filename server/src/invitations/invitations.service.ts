@@ -39,7 +39,22 @@ export class InvitationsService {
 	async rejectInvitation(id: string): Promise<Invitation> {
 		const invitation = await this.invitationRepository.findOne(id);
 
-		invitation.status = InvitationStatus.REJECTED;
+		switch (invitation.status) {
+			case InvitationStatus.PENDING:
+				invitation.status = InvitationStatus.REJECTED;
+				break;
+
+			case InvitationStatus.ACCEPTED:
+				invitation.status = InvitationStatus.CANCELLED;
+				break;
+
+			case InvitationStatus.CANCELLED:
+				break;
+
+			case InvitationStatus.REJECTED:
+				break;
+		}
+
 		invitation.statusUpdateDate = new Date();
 
 		return await this.invitationRepository.save(invitation);
