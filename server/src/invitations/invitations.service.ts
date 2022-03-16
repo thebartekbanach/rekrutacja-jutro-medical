@@ -24,6 +24,12 @@ export class InvitationsService {
 		return await this.invitationRepository.find();
 	}
 
+	async findOnlyAcceptedInvitations(): Promise<Invitation[]> {
+		return await this.invitationRepository.find({
+			where: { status: InvitationStatus.ACCEPTED },
+		});
+	}
+
 	async findOne(id: string): Promise<Invitation> {
 		return await this.invitationRepository.findOne(id);
 	}
