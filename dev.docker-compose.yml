@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  server:
+    container_name: invitation-list-server
+    build:
+      context: ./server
+      target: development
+      dockerfile: ./Dockerfile
+    command: npm run start:debug
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DB_DATABASE: invitation_list
+    ports:
+      - 3000:3000
+      - 9229:9229 # for debugger
+    networks:
+      - invitation-list-network
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - db
+    restart: unless-stopped
+    
+  db:
+    container_name: invitation-list-db
+    image: postgres:14.2-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    networks:
+      - invitation-list-network
+    restart: unless-stopped
+  
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: invitation-list-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: test@test.com
+      PGADMIN_DEFAULT_PASSWORD: test
+    ports:
+      - 3001:80
+    networks:
+      - invitation-list-network
+    depends_on:
+      - db
+    restart: unless-stopped
+
+networks:
+  invitation-list-network:
