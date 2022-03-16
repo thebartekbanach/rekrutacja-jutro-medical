@@ -1,8 +1,10 @@
 import styles from "../../styles/Admin.module.scss";
 import button from "../../styles/Button.module.scss";
 import common from "../../styles/Common.module.scss";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { gql, useMutation, useQuery } from "@apollo/client";
+import { DatePicker } from "antd";
+import moment from "moment";
 
 interface InvitationInfo {
 	id: string;
@@ -103,13 +105,14 @@ const InvitationAddForm: FC<InvitationAddFormProps> = ({ onSubmit }) => {
 
 	return (
 		<div className={styles["invitation-add-form"]}>
-			<form id="book-creation-form" onSubmit={handleSubmit}>
+			<form onSubmit={handleSubmit}>
 				<header>Add invitation</header>
 
 				<div className={styles["invitation-add-form-inputs"]}>
 					<div>
 						<label>First name</label>
 						<input
+							className={styles.input}
 							type="text"
 							value={firstName}
 							onChange={(e) => setFirstName(e.target.value)}
@@ -120,6 +123,7 @@ const InvitationAddForm: FC<InvitationAddFormProps> = ({ onSubmit }) => {
 					<div>
 						<label>Last name</label>
 						<input
+							className={styles.input}
 							type="text"
 							value={lastName}
 							onChange={(e) => setLastName(e.target.value)}
@@ -168,10 +172,103 @@ const DELETE_INVITATION = gql`
 	}
 `;
 
+const GET_PARTY_INFO = gql`
+	query {
+		partyInfo {
+			where
+			when
+		}
+	}
+`;
+
+const UPDATE_PARTY_INFO = gql`
+	mutation ($info: PartyInput!) {
+		savePartyInfo(info: $info) {
+			where
+			when
+		}
+	}
+`;
+
+interface PartyInfo {
+	where: string;
+	when: Date;
+}
+
+interface PartyInfoQueryResult {
+	partyInfo: PartyInfo;
+}
+
+interface PartyInfoUpdateFormProps {
+	storedWhere: string;
+	storedWhen: Date;
+
+	onUpdate: (where: string, when: Date) => void;
+}
+
+const PartyInfoUpdateForm: FC<PartyInfoUpdateFormProps> = ({
+	storedWhere,
+	storedWhen,
+	onUpdate,
+}) => {
+	const [where, setWhere] = useState(storedWhere);
+	const [when, setWhen] = useState(storedWhen);
+
+	useEffect(() => {
+		setWhere(storedWhere);
+		setWhen(storedWhen);
+	}, [storedWhere, storedWhen]);
+
+	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		onUpdate(where, when);
+	};
+
+	return (
+		<div className={styles["invitation-add-form"]}>
+			<form onSubmit={handleSubmit}>
+				<header>Party info</header>
+
+				<div className={styles["invitation-add-form-inputs"]}>
+					<div>
+						<label>Place</label>
+						<input
+							className={styles.input}
+							type="text"
+							value={where}
+							onChange={(e) => setWhere(e.target.value)}
+							required
+						/>
+					</div>
+
+					<div style={{ marginBottom: 20 }}>
+						<label>When</label>
+						<DatePicker
+							showTime
+							value={moment(when)}
+							onChange={(date) =>
+								setWhen(date?.toDate() ?? new Date())
+							}
+						/>
+					</div>
+
+					<button type="submit" className={button.button}>
+						Save
+					</button>
+				</div>
+			</form>
+		</div>
+	);
+};
+
 const AdminPage = () => {
 	const { data } = useQuery<GetInvitationsQueryResult>(GET_ALL_INVITATIONS);
 	const [createInvitation] = useMutation(CREATE_INVITATION);
 	const [deleteInvitation] = useMutation(DELETE_INVITATION);
+
+	const { data: partyInfoData } =
+		useQuery<PartyInfoQueryResult>(GET_PARTY_INFO);
+	const [updatePartyInfo] = useMutation(UPDATE_PARTY_INFO);
 
 	const createInvitationHandler = (firstName: string, lastName: string) => {
 		createInvitation({
@@ -194,6 +291,20 @@ const AdminPage = () => {
 		});
 	};
 
+	const updatePartyInfoHandler = (where: string, when: Date) => {
+		updatePartyInfo({
+			variables: {
+				info: {
+					where,
+					when,
+				},
+			},
+			refetchQueries: [GET_PARTY_INFO],
+		});
+	};
+
+	console.log(partyInfoData);
+
 	return (
 		<main className={common["page-content"]}>
 			<h1>Invitations list</h1>
@@ -202,6 +313,11 @@ const AdminPage = () => {
 				onDelete={deleteInvitationHandler}
 			/>
 			<InvitationAddForm onSubmit={createInvitationHandler} />
+			<PartyInfoUpdateForm
+				storedWhere={partyInfoData?.partyInfo.where ?? ""}
+				storedWhen={partyInfoData?.partyInfo.when ?? new Date()}
+				onUpdate={updatePartyInfoHandler}
+			/>
 		</main>
 	);
 };
