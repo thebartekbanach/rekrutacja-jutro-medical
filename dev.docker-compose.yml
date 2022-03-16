@@ -11,8 +11,22 @@ services:
     ports:
       - 80:80
     depends_on:
+      - client
       - server
       - pgadmin
+
+  client:
+    container_name: invitation-list-client
+    build:
+      context: ./client
+      dockerfile: ./Dockerfile
+      target: dev
+    volumes:
+      - ./client:/src/client
+    networks:
+      - invitation-list-network
+    depends_on:
+     - server
 
   server:
     container_name: invitation-list-server
