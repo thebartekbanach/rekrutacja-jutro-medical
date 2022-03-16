@@ -1,4 +1,5 @@
 import { InjectRepository } from "@nestjs/typeorm";
+import { PartyService } from "src/party/party.service";
 import { Repository } from "typeorm";
 import { NewInvitationInput } from "./dto/newInvitation.input";
 import { Invitation, InvitationStatus } from "./invitation.entity";
@@ -7,7 +8,17 @@ export class InvitationsService {
 	constructor(
 		@InjectRepository(Invitation)
 		private readonly invitationRepository: Repository<Invitation>,
+		private readonly partyInfoService: PartyService,
 	) {}
+
+	async isInvitationModificationLocked(): Promise<boolean> {
+		const partyInfo = await this.partyInfoService.getInfo();
+
+		const partyDate = partyInfo.when;
+		const now = new Date();
+
+		return partyDate.getTime() - now.getTime() < 5 * 60 * 60 * 1000;
+	}
 
 	async findAll(): Promise<Invitation[]> {
 		return await this.invitationRepository.find();
@@ -18,6 +29,12 @@ export class InvitationsService {
 	}
 
 	async create(userInformation: NewInvitationInput): Promise<Invitation> {
+		if (await this.isInvitationModificationLocked()) {
+			throw new Error(
+				"Creating invitations is not possible due to the short response time for the user",
+			);
+		}
+
 		const invitation = new Invitation();
 
 		invitation.firstName = userInformation.firstName;
@@ -28,6 +45,12 @@ export class InvitationsService {
 	}
 
 	async acceptInvitation(id: string): Promise<Invitation> {
+		if (await this.isInvitationModificationLocked()) {
+			throw new Error(
+				"Accepting invitations is not possible due to the short response time for the user",
+			);
+		}
+
 		const invitation = await this.invitationRepository.findOne(id);
 
 		invitation.status = InvitationStatus.ACCEPTED;
@@ -37,6 +60,12 @@ export class InvitationsService {
 	}
 
 	async rejectInvitation(id: string): Promise<Invitation> {
+		if (await this.isInvitationModificationLocked()) {
+			throw new Error(
+				"Rejecting invitations is not possible due to the short response time for the user",
+			);
+		}
+
 		const invitation = await this.invitationRepository.findOne(id);
 
 		switch (invitation.status) {

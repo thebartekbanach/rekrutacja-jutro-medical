@@ -17,6 +17,11 @@ export class InvitationsResolver {
 		return await this.invitationService.findOne(id);
 	}
 
+	@Query(() => Boolean)
+	async isInvitationModificationLocked(): Promise<boolean> {
+		return await this.invitationService.isInvitationModificationLocked();
+	}
+
 	@Mutation(() => Invitation)
 	async createInvitation(
 		@Args("for") invitation: NewInvitationInput,
