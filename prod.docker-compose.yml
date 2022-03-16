@@ -28,7 +28,7 @@ services:
     networks:
       - public
     depends_on:
-     - server
+      - server
 
   server:
     container_name: invitation-list-server
@@ -46,6 +46,8 @@ services:
       - public
     depends_on:
       - db
+    volumes:
+      - /usr/src/app
     restart: unless-stopped
 
   db:
