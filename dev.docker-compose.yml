@@ -1,6 +1,19 @@
 version: '3.8'
 
 services:
+  proxy:
+    container_name: invitation-list-proxy
+    build:
+      context: ./proxy
+      dockerfile: ./Dockerfile
+    networks:
+      - invitation-list-network
+    ports:
+      - 80:80
+    depends_on:
+      - server
+      - pgadmin
+
   server:
     container_name: invitation-list-server
     build:
@@ -15,7 +28,6 @@ services:
       DB_PASSWORD: postgres
       DB_DATABASE: postgres
     ports:
-      - 3000:3000
       - 9229:9229 # for debugger
     networks:
       - invitation-list-network
@@ -44,7 +56,7 @@ services:
       PGADMIN_DEFAULT_EMAIL: test@test.com
       PGADMIN_DEFAULT_PASSWORD: test
     ports:
-      - 3001:80
+      - 3456:80
     networks:
       - invitation-list-network
     depends_on:
