@@ -6,6 +6,7 @@ import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { Invitation } from "./invitations/invitation.entity";
 import { InvitationsModule } from "./invitations/invitations.module";
+import { PartyModule } from "./party/party.module";
 
 const typeOrmConfig: TypeOrmModuleOptions = {
 	type: "postgres",
@@ -27,6 +28,7 @@ const typeOrmConfig: TypeOrmModuleOptions = {
 			playground: true,
 		}),
 		InvitationsModule,
+		PartyModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],
