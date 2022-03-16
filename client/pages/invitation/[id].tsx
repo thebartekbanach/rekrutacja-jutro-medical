@@ -10,6 +10,7 @@ const GET_INVITATION_INFO = gql`
 			firstName
 			status
 		}
+		isInvitationModificationLocked
 	}
 `;
 
@@ -38,11 +39,13 @@ interface InvitationInfo {
 
 interface GetInvitationInfoQueryResult {
 	invitation: InvitationInfo;
+	isInvitationModificationLocked: boolean;
 }
 
 interface AcceptanceBoxProps {
 	invitationId: string;
 	currentStatus: InvitationStatus;
+	modificationsLocked: boolean;
 }
 
 interface ButtonProps {
@@ -87,6 +90,7 @@ const Button: FC<ButtonProps> = ({
 const AcceptanceBox: FC<AcceptanceBoxProps> = ({
 	invitationId,
 	currentStatus,
+	modificationsLocked,
 }) => {
 	const [acceptInvitation] = useMutation(ACCEPT_INVITATION);
 	const [rejectInvitation] = useMutation(REJECT_INVITATION);
@@ -118,12 +122,14 @@ const AcceptanceBox: FC<AcceptanceBoxProps> = ({
 					text="Yes"
 					type="success"
 					forceSelected={currentStatus === "ACCEPTED"}
+					disabled={modificationsLocked}
 				/>{" "}
 				<Button
 					onClick={handleReject}
 					text="No"
 					type="danger"
 					forceSelected={isRejectButtonForceSelected}
+					disabled={modificationsLocked}
 				/>
 			</div>
 			<h3>You can change your mind up to 5 hours before party!</h3>
@@ -150,6 +156,9 @@ const InvitationPage = () => {
 			<AcceptanceBox
 				invitationId={id as string}
 				currentStatus={data?.invitation.status ?? "PENDING"}
+				modificationsLocked={
+					data?.isInvitationModificationLocked ?? true
+				}
 			/>
 		</main>
 	);
