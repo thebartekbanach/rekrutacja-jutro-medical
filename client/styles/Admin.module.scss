@@ -46,6 +46,12 @@
 	text-align: center;
 	margin-top: 50px;
 
+	&.locked {
+		filter: grayscale(100%);
+		opacity: 0.5;
+		pointer-events: none;
+	}
+
 	form {
 		display: inline-block;
 

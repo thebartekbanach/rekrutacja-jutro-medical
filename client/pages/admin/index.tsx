@@ -88,9 +88,13 @@ const InvitationsTable: FC<InvitationTableProps> = ({
 
 interface InvitationAddFormProps {
 	onSubmit: (firstName: string, lastName: string) => void;
+	isAddingNewInvitationsLocked: boolean;
 }
 
-const InvitationAddForm: FC<InvitationAddFormProps> = ({ onSubmit }) => {
+const InvitationAddForm: FC<InvitationAddFormProps> = ({
+	onSubmit,
+	isAddingNewInvitationsLocked,
+}) => {
 	const [firstName, setFirstName] = useState("");
 	const [lastName, setLastName] = useState("");
 
@@ -103,8 +107,13 @@ const InvitationAddForm: FC<InvitationAddFormProps> = ({ onSubmit }) => {
 		setLastName("");
 	};
 
+	const formStyles = [styles["invitation-add-form"]];
+	if (isAddingNewInvitationsLocked) {
+		formStyles.push(styles["locked"]);
+	}
+
 	return (
-		<div className={styles["invitation-add-form"]}>
+		<div className={formStyles.join(" ")}>
 			<form onSubmit={handleSubmit}>
 				<header>Add invitation</header>
 
@@ -154,6 +163,7 @@ const GET_ALL_INVITATIONS = gql`
 
 interface GetInvitationsQueryResult {
 	invitations: InvitationInfo[];
+	isInvitationModificationLocked: boolean;
 }
 
 const CREATE_INVITATION = gql`
@@ -178,6 +188,7 @@ const GET_PARTY_INFO = gql`
 			where
 			when
 		}
+		isInvitationModificationLocked
 	}
 `;
 
@@ -197,6 +208,7 @@ interface PartyInfo {
 
 interface PartyInfoQueryResult {
 	partyInfo: PartyInfo;
+	isInvitationModificationLocked: boolean;
 }
 
 interface PartyInfoUpdateFormProps {
@@ -303,7 +315,8 @@ const AdminPage = () => {
 		});
 	};
 
-	console.log(partyInfoData);
+	const isAddingNewInvitationsLocked =
+		partyInfoData?.isInvitationModificationLocked ?? true;
 
 	return (
 		<main className={common["page-content"]}>
@@ -312,7 +325,10 @@ const AdminPage = () => {
 				invitations={data?.invitations ?? []}
 				onDelete={deleteInvitationHandler}
 			/>
-			<InvitationAddForm onSubmit={createInvitationHandler} />
+			<InvitationAddForm
+				onSubmit={createInvitationHandler}
+				isAddingNewInvitationsLocked={isAddingNewInvitationsLocked}
+			/>
 			<PartyInfoUpdateForm
 				storedWhere={partyInfoData?.partyInfo.where ?? ""}
 				storedWhen={partyInfoData?.partyInfo.when ?? new Date()}
