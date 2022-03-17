@@ -15,13 +15,17 @@ FROM node:16-alpine AS production
 
 WORKDIR /usr/src/app
 
-COPY package*.json ./
+COPY --chown=node:node package*.json ./
 RUN npm ci
 
-COPY . .
+COPY --chown=node:node . .
 
 ENV NODE_ENV production
 
 RUN npm run build
 
-CMD ["npm", "start:prod"]
+RUN chown node -R /usr/src/app
+
+USER node
+
+CMD ["npm", "start"]
