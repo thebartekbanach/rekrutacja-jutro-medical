@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+	<body>
+		<h1>
+			This is valid invitation ticket for:
+			{{ firstName }} {{ lastName }}
+		</h1>
+		<h2>Party information:
+			<ul>
+				<li>Where: {{ where }}</li>
+				<li>When: {{ when }}</li>
+			</ul>
+		</h2>
+		<h2>List of people who accepted invitations:</h2>
+		<ul>
+			{{#each peopleWhoAcceptedInvitations}}
+				<li>{{ this }}</li>
+			{{/each}}
+		</ul>
+	</body>
+</html>

@@ -1,6 +1,7 @@
-import { Controller, Get, Header, Param } from "@nestjs/common";
+import { Controller, Get, Header, Param, Render } from "@nestjs/common";
 import { PartyInfoService } from "src/party/partyInfo.service";
 import { InvitationsService } from "./invitations.service";
+import { TicketDto } from "./dto/ticket.dto";
 
 @Controller("invitation")
 export class InvitationController {
@@ -10,41 +11,30 @@ export class InvitationController {
 	) {}
 
 	@Get(":id/ticket")
+	@Render("ticket.hbs")
 	@Header("Content-Type", "text/html")
 	@Header("Content-Disposition", "attachment; filename=ticket.html")
-	async getTicket(@Param("id") id: string): Promise<string> {
+	async getTicket(@Param("id") id: string) {
 		const invitation = await this.invitationService.findOne(id);
 		const partyInfo = await this.partyInfoService.getInfo();
-		const acceptedInvitations =
+
+		const allAcceptedInvitations =
 			await this.invitationService.findOnlyAcceptedInvitations();
 
-		const acceptedInvitationsHtmlList = acceptedInvitations
-			.map(
-				(invitation) =>
-					`<li>${invitation.firstName} ${invitation.lastName}</li>`,
-			)
-			.join("");
+		const peopleWhoAcceptedInvitations = allAcceptedInvitations
+			.filter((invitation) => invitation.id != id)
+			.map((invitation) => `${invitation.firstName} ${invitation.lastName}`);
 
-		const html = `
-			<html>
-				<body>
-					<h1>
-						This is valid invitation ticket for:
-						${invitation.firstName} ${invitation.lastName}
-					</h1>
-					<h2>Party information:</h2>
-					<ul>
-						<li>Where: ${partyInfo.where}</li>
-						<li>When: ${partyInfo.when}</li>
-					</ul>
-					<h2>List of people who accepted invitations:</h2>
-					<ul>
-						${acceptedInvitationsHtmlList}
-					</ul>
-				</body>
-			</html>
-		`;
+		const model: TicketDto = {
+			firstName: invitation.firstName,
+			lastName: invitation.lastName,
+			where: partyInfo.where,
+			when: partyInfo.when.toLocaleString("pl-PL", {
+				timeZone: "Europe/Warsaw",
+			}),
+			peopleWhoAcceptedInvitations,
+		};
 
-		return html;
+		return model;
 	}
 }
