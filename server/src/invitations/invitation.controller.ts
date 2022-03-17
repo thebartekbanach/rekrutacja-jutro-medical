@@ -3,6 +3,8 @@ import { PartyInfoService } from "src/partyInfo/partyInfo.service";
 import { InvitationsService } from "./invitations.service";
 import { TicketDto } from "./dto/ticket.dto";
 
+// this controller allows to download ticket.html for given invitation
+// on GET request to /invitation/:id/ticket
 @Controller("invitation")
 export class InvitationController {
 	constructor(

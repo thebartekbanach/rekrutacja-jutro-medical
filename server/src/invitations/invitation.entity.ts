@@ -16,23 +16,30 @@ registerEnumType(InvitationStatus, {
 @Entity()
 @ObjectType()
 export class Invitation {
-	@Field(() => ID)
 	@PrimaryGeneratedColumn()
+	@Field(() => ID, { description: "The unique identifier of the invitation" })
 	id: string;
 
-	@Field()
 	@Column()
+	@Field({ description: "The first name of the person invited to the party" })
 	firstName: string;
 
-	@Field()
 	@Column()
+	@Field({ description: "The last name of the person invited to the party" })
 	lastName: string;
 
-	@Field(() => InvitationStatus)
 	@Column({ default: InvitationStatus.PENDING })
+	@Field(() => InvitationStatus, {
+		description:
+			"The status of the invitation, can be one of: PENDING, ACCEPTED, REJECTED, CANCELLED",
+	})
 	status: InvitationStatus;
 
-	@Field({ nullable: true })
 	@Column({ nullable: true })
+	@Field({
+		nullable: true,
+		description:
+			"Time when the person changed the status of his/her invitation, updates every time for status acceptance / rejection",
+	})
 	statusUpdateDate?: Date;
 }
