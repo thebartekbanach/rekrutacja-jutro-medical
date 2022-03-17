@@ -1,6 +1,6 @@
 # Recruitment task for [Jutro Medical](https://jutromedical.com/) company
 
-This repository contains solution for the recruitment [task](./task.pdf).
+This repository contains solution for the recruitment [task](./docs/task.pdf).
 
 Project consists of 4 main services:
 
@@ -25,7 +25,7 @@ Proxy is configured to serve everything under [http://localhost](http://localhos
 
 Then, when solution is running, you can open [http://localhost/admin](http://localhost/admin) in your browser. You will see simple administration panel without any authentication, because it was not necessary for this task. In real life, I would secure it in some way.
 
-![./admin-panel.png](./admin-panel.png)
+![./docs/admin-panel.png](./docs/admin-panel.png)
 
 To access `GraphQL` playground you can simply go to [http://localhost/api/graphql](http://localhost/api/graphql).
 
@@ -39,4 +39,4 @@ Backend uses `NestJS` framework and `Apollo GraphQL` for the `GraphQL` endpoint 
 
 I will add more info tomorrow, because I started to build this project so late, so not everything looks as good as I would like it to.
 
-![./meme.jpg](./meme.jpg)
+![./docs/meme.jpg](./docs/meme.jpg)
