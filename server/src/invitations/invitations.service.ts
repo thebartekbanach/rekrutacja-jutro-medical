@@ -1,5 +1,5 @@
 import { InjectRepository } from "@nestjs/typeorm";
-import { PartyInfoService } from "src/party/partyInfo.service";
+import { PartyInfoService } from "src/partyInfo/partyInfo.service";
 import { Repository } from "typeorm";
 import { NewInvitationInput } from "./dto/newInvitation.input";
 import { Invitation, InvitationStatus } from "./invitation.entity";

@@ -4,7 +4,7 @@ import { GraphQLModule } from "@nestjs/graphql";
 import { TypeOrmModule, TypeOrmModuleOptions } from "@nestjs/typeorm";
 import { Invitation } from "./invitations/invitation.entity";
 import { InvitationsModule } from "./invitations/invitations.module";
-import { PartyInfoModule } from "./party/partyInfo.module";
+import { PartyInfoModule } from "./partyInfo/partyInfo.module";
 
 const typeOrmConfig: TypeOrmModuleOptions = {
 	type: "postgres",

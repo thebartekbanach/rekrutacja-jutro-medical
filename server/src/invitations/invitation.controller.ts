@@ -1,5 +1,5 @@
 import { Controller, Get, Header, Param, Render } from "@nestjs/common";
-import { PartyInfoService } from "src/party/partyInfo.service";
+import { PartyInfoService } from "src/partyInfo/partyInfo.service";
 import { InvitationsService } from "./invitations.service";
 import { TicketDto } from "./dto/ticket.dto";
 

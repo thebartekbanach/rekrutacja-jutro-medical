@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { PartyInfoService } from "src/party/partyInfo.service";
+import { PartyInfoService } from "src/partyInfo/partyInfo.service";
 import { InvitationController } from "./invitation.controller";
 import { Invitation } from "./invitation.entity";
 import { InvitationsResolver } from "./invitations.resolver";
