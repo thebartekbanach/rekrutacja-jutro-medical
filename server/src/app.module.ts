@@ -17,14 +17,16 @@ const typeOrmConfig: TypeOrmModuleOptions = {
 	synchronize: true,
 };
 
+const apolloDriverConfig: ApolloDriverConfig = {
+	driver: ApolloDriver,
+	autoSchemaFile: "schema.gql",
+	playground: true,
+};
+
 @Module({
 	imports: [
 		TypeOrmModule.forRoot(typeOrmConfig),
-		GraphQLModule.forRoot<ApolloDriverConfig>({
-			driver: ApolloDriver,
-			autoSchemaFile: "schema.gql",
-			playground: true,
-		}),
+		GraphQLModule.forRoot(apolloDriverConfig),
 		InvitationsModule,
 		PartyModule,
 	],
