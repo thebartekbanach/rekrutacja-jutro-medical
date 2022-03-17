@@ -24,7 +24,7 @@ ENV NODE_ENV production
 
 RUN npm run build
 
-RUN chown node -R /usr/src/app
+RUN chown node:node /usr/src/app
 
 USER node
 

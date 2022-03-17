@@ -46,9 +46,6 @@ services:
       - public
     depends_on:
       - db
-    volumes:
-      - /data/bday/schema.gql:/usr/src/app/schema.gql
-      - /data/bday/party.json:/usr/src/app/party.json
     restart: unless-stopped
 
   db:
