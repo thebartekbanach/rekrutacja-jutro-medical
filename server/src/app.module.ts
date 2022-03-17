@@ -2,8 +2,6 @@ import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
 import { Module } from "@nestjs/common";
 import { GraphQLModule } from "@nestjs/graphql";
 import { TypeOrmModule, TypeOrmModuleOptions } from "@nestjs/typeorm";
-import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
 import { Invitation } from "./invitations/invitation.entity";
 import { InvitationsModule } from "./invitations/invitations.module";
 import { PartyModule } from "./party/party.module";
@@ -30,7 +28,5 @@ const typeOrmConfig: TypeOrmModuleOptions = {
 		InvitationsModule,
 		PartyModule,
 	],
-	controllers: [AppController],
-	providers: [AppService],
 })
 export class AppModule {}
