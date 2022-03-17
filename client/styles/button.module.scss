@@ -1,0 +1,38 @@
+.button {
+	border: 2px solid #009879;
+	background: transparent;
+	padding: 10px 30px;
+
+	color: #009879;
+
+	cursor: pointer;
+
+	transition: background 300ms, color 300ms, color 300ms, padding 200ms;
+
+	&.selected,
+	&:hover {
+		background: #009879;
+		color: white;
+	}
+
+	&:active {
+		padding: 10px 25px;
+	}
+
+	&.danger {
+		border-color: #c92a2a;
+		color: #c92a2a;
+
+		&.selected,
+		&:hover {
+			background: #c92a2a;
+			color: white;
+		}
+	}
+
+	&.disabled {
+		border-color: #ddd;
+		color: #ddd;
+		pointer-events: none;
+	}
+}
