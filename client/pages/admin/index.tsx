@@ -193,7 +193,7 @@ const GET_PARTY_INFO = gql`
 `;
 
 const UPDATE_PARTY_INFO = gql`
-	mutation ($info: PartyInput!) {
+	mutation ($info: PartyInfoInput!) {
 		savePartyInfo(info: $info) {
 			where
 			when

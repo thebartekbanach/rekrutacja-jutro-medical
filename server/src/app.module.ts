@@ -4,7 +4,7 @@ import { GraphQLModule } from "@nestjs/graphql";
 import { TypeOrmModule, TypeOrmModuleOptions } from "@nestjs/typeorm";
 import { Invitation } from "./invitations/invitation.entity";
 import { InvitationsModule } from "./invitations/invitations.module";
-import { PartyModule } from "./party/party.module";
+import { PartyInfoModule } from "./party/partyInfo.module";
 
 const typeOrmConfig: TypeOrmModuleOptions = {
 	type: "postgres",
@@ -28,7 +28,7 @@ const apolloDriverConfig: ApolloDriverConfig = {
 		TypeOrmModule.forRoot(typeOrmConfig),
 		GraphQLModule.forRoot(apolloDriverConfig),
 		InvitationsModule,
-		PartyModule,
+		PartyInfoModule,
 	],
 })
 export class AppModule {}

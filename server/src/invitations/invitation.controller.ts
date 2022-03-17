@@ -1,12 +1,12 @@
 import { Controller, Get, Header, Param } from "@nestjs/common";
-import { PartyService } from "src/party/party.service";
+import { PartyInfoService } from "src/party/partyInfo.service";
 import { InvitationsService } from "./invitations.service";
 
 @Controller("invitation")
 export class InvitationController {
 	constructor(
 		private readonly invitationService: InvitationsService,
-		private readonly partyInfoService: PartyService,
+		private readonly partyInfoService: PartyInfoService,
 	) {}
 
 	@Get(":id/ticket")

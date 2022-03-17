@@ -1,5 +1,5 @@
 import { InjectRepository } from "@nestjs/typeorm";
-import { PartyService } from "src/party/party.service";
+import { PartyInfoService } from "src/party/partyInfo.service";
 import { Repository } from "typeorm";
 import { NewInvitationInput } from "./dto/newInvitation.input";
 import { Invitation, InvitationStatus } from "./invitation.entity";
@@ -8,7 +8,7 @@ export class InvitationsService {
 	constructor(
 		@InjectRepository(Invitation)
 		private readonly invitationRepository: Repository<Invitation>,
-		private readonly partyInfoService: PartyService,
+		private readonly partyInfoService: PartyInfoService,
 	) {}
 
 	async isInvitationModificationLocked(): Promise<boolean> {

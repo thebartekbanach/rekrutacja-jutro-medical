@@ -1,7 +1,7 @@
-import { Party } from "./party.entity";
+import { PartyInfo } from "./partyInfo.entity";
 import * as fs from "fs";
 
-export class PartyService {
+export class PartyInfoService {
 	private async reinitializeDataFileIfNotAvail(): Promise<void> {
 		try {
 			await fs.promises.access("party.json", fs.constants.F_OK);
@@ -20,20 +20,20 @@ export class PartyService {
 		}
 	}
 
-	async getInfo(): Promise<Party> {
+	async getInfo(): Promise<PartyInfo> {
 		await this.reinitializeDataFileIfNotAvail();
 
 		const partyRawData = await fs.promises.readFile("party.json");
 		const partyJson = JSON.parse(partyRawData.toString());
 
-		const partyInfo = new Party();
+		const partyInfo = new PartyInfo();
 		partyInfo.where = partyJson.where;
 		partyInfo.when = new Date(partyJson.when);
 
 		return partyInfo;
 	}
 
-	async saveInfo(party: Party): Promise<Party> {
+	async saveInfo(party: PartyInfo): Promise<PartyInfo> {
 		const partyData = JSON.stringify(party);
 		await fs.promises.writeFile("party.json", partyData);
 		return party;

@@ -1,7 +1,7 @@
 import { Field, ObjectType } from "@nestjs/graphql";
 
 @ObjectType()
-export class Party {
+export class PartyInfo {
 	@Field()
 	where: string;
 
