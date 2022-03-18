@@ -31,7 +31,13 @@ export class InvitationsService {
 	}
 
 	async findOne(id: string): Promise<Invitation> {
-		return await this.invitationRepository.findOne(id);
+		const invitation = await this.invitationRepository.findOne(id);
+
+		if (invitation === undefined) {
+			throw new Error("Invitation not found");
+		}
+
+		return invitation;
 	}
 
 	async create(userInformation: NewInvitationInput): Promise<Invitation> {
@@ -57,7 +63,7 @@ export class InvitationsService {
 			);
 		}
 
-		const invitation = await this.invitationRepository.findOne(id);
+		const invitation = await this.findOne(id);
 
 		invitation.status = InvitationStatus.ACCEPTED;
 		invitation.statusUpdateDate = new Date();
@@ -72,7 +78,7 @@ export class InvitationsService {
 			);
 		}
 
-		const invitation = await this.invitationRepository.findOne(id);
+		const invitation = await this.findOne(id);
 
 		switch (invitation.status) {
 			case InvitationStatus.PENDING:
@@ -96,7 +102,7 @@ export class InvitationsService {
 	}
 
 	async delete(id: string): Promise<Invitation> {
-		const invitation = await this.invitationRepository.findOne(id);
+		const invitation = await this.findOne(id);
 		await this.invitationRepository.delete(id);
 		return invitation;
 	}
